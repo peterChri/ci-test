@@ -1,0 +1,31 @@
+name: Python autopep8 conformance check
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install autopep8
+      - name: Check autopep8 conformance
+        run: |
+          DIFF=$(autopep8 --diff --recursive .)
+          if [[ -n "$DIFF" ]]; then
+            echo "These files do not comply with PEP8:"
+            echo "$DIFF"
+            exit 1
+          fi
