@@ -1,6 +1,8 @@
 name: Python autopep8 conformance check
 
 on:
+  push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
